@@ -1,15 +1,14 @@
 from PySimpleGUI import PySimpleGUI as sg
 from file_reader import FileReader
+from constant import VALID_FILES_TYPES
 
 # Layout
 sg.theme('Reddit')
 
-VALID_FILE_TYPE = [('txt file', '*.txt')]
-
 layout = [
     [sg.Text('Pick a file'),
      sg.InputText(size=(25, 1), key='-PATH-'),
-     sg.FileBrowse(file_types=VALID_FILE_TYPE)],
+     sg.FileBrowse(file_types=VALID_FILES_TYPES)],
     [sg.Text('Total number of characters: 0', key='-CHAR-')],
     [sg.Exit(), sg.Button(button_text='Run')]
 ]
@@ -22,7 +21,7 @@ while True:
     events, values = window.read()
     if events in (sg.WINDOW_CLOSED, 'Exit'):
         break
-    elif events == 'Run':
+    elif events == 'Run' and values['-PATH-']:
         file = FileReader(values['-PATH-'])
         characters = file.count_words()
         window['-CHAR-'].update(value='Total number of characters: ' + str(characters))
