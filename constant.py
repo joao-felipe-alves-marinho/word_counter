@@ -1,5 +1,6 @@
 SUPPORTED_FILES_TYPES = [('Txt files', '*.txt'),
-                         ('Doc files', '*.docx')]
+                         ('Doc files', '*.docx'),
+                         ('Pdf files', '*.pdf')]
 
 ALL_FILES_TYPES = [('All supported files', '; '.join(y for x, y in SUPPORTED_FILES_TYPES))]
 

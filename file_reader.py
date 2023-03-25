@@ -1,4 +1,6 @@
+import PyPDF2
 import pathlib
+
 from docx import Document
 
 
@@ -18,6 +20,8 @@ class FileReader:
             return self._read_txt_file()
         elif self.file_type == '.docx':
             return self._read_docx_file()
+        elif self.file_type == '.pdf':
+            return self._read_pdf_file()
 
     def count_words(self):
         """ Counts the characters of the file """
@@ -25,7 +29,7 @@ class FileReader:
 
     def _read_txt_file(self):
         """ Reads txt files  """
-        with open(self.path, 'r', encoding='utf-8') as file:
+        with open(self.path, 'r', encoding='UTF-8') as file:
             return file.read()
 
     def _read_docx_file(self):
@@ -35,3 +39,13 @@ class FileReader:
         for p in doc.paragraphs:
             fulltext.append(p.text)
         return '\n'.join(fulltext)
+
+    def _read_pdf_file(self):
+        """ Reads pdf files """
+        with open(self.path, 'rb') as file_obj:
+            reader = PyPDF2.PdfReader(file_obj)
+            full_text = ''
+            for page in range(len(reader.pages)):
+                page_reader = reader.pages[page]
+                full_text += page_reader.extract_text()
+            return full_text
